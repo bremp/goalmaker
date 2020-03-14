@@ -18,18 +18,6 @@
 <script>
 export default {
   name: "GoalList",
-  data: () => ({
-    goals: [
-      {
-        title: "Vuetify UI."
-      },
-      {
-        title: "Create Goal List Component"
-      },
-      {
-        title: "Create GoalAdd Component"
-      }
-    ]
-  })
+  props: ["goals"]
 };
 </script>
