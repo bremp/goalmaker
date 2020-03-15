@@ -42,7 +42,7 @@
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-container class="fill-height" fluid>
+      <v-container fluid>
         <goal-list v-bind:goals="goals"></goal-list>
       </v-container>
     </v-content>
