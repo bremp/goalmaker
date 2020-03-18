@@ -38,13 +38,12 @@
         prepend-inner-icon="mdi-magnify"
         label="Search"
         class="hidden-sm-and-down"
+        v-model="searchInput"
       />
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-container fluid>
-        <goal-list v-bind:goals="goals"></goal-list>
-      </v-container>
+      <goal-list v-bind:goals="searchedGoals"></goal-list>
     </v-content>
     <goal-add @addGoal="appendGoal"></goal-add>
   </v-app>
@@ -64,6 +63,7 @@ export default {
   },
   data: () => ({
     drawer: false,
+    searchInput: "",
     items: [
       { icon: "mdi-contacts", text: "Contacts" },
       { icon: "mdi-history", text: "Frequently contacted" },
@@ -78,9 +78,27 @@ export default {
       },
       {
         title: "Implement Vuex"
+      },
+      {
+        title: "Search"
+      },
+      {
+        title: "Unit Test"
+      },
+      {
+        title: "Git CI"
       }
     ]
   }),
+  computed: {
+    searchedGoals() {
+      const searchFilter = this.searchInput.toLowerCase().trim();
+      if (!searchFilter) return this.goals;
+      return this.goals.filter(
+        g => g.title.toLowerCase().indexOf(searchFilter) > -1
+      );
+    }
+  },
   methods: {
     appendGoal(goalData) {
       console.log(goalData);
