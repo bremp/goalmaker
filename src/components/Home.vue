@@ -7,7 +7,7 @@
     >
       <v-list dense>
         <template v-for="item in items">
-          <v-list-item :key="item.text" link @click="display(item.text)">
+          <v-list-item :key="item.text" link @click="showComponent(item.text)">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -28,8 +28,11 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-        <span class="hidden-sm-and-down">Goal Maker</span>
+        <router-link class="nav-link" to="/">
+          <span class="hidden-sm-and-down">Goal Maker</span>
+        </router-link>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -43,7 +46,7 @@
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <goal-list v-bind:goals="searchedGoals"></goal-list>
+      <goal-list :goals="searchedGoals"></goal-list>
     </v-content>
     <goal-add @addGoal="appendGoal" v-if="showAdd"></goal-add>
   </v-app>
@@ -62,8 +65,8 @@ export default {
     drawer: false,
     searchInput: "",
     items: [
-      { icon: "mdi-contacts", text: "Completed" },
-      { icon: "mdi-history", text: "Missed" }
+      // { icon: "mdi-contacts", text: "Completed" },
+      { icon: "mdi-history", text: "History" }
     ],
     goals: [
       {
@@ -114,7 +117,17 @@ export default {
       this.goals.push({
         title: goalData.title
       });
+    },
+    showComponent() {
+      this.$router.push("/history");
     }
   }
 };
 </script>
+
+<style scoped>
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+}
+</style>
