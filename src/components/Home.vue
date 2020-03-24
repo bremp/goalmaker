@@ -7,7 +7,7 @@
     >
       <v-list dense>
         <template v-for="item in items">
-          <v-list-item :key="item.text" link>
+          <v-list-item :key="item.text" link @click="display(item.text)">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -45,7 +45,7 @@
     <v-content>
       <goal-list v-bind:goals="searchedGoals"></goal-list>
     </v-content>
-    <goal-add @addGoal="appendGoal"></goal-add>
+    <goal-add @addGoal="appendGoal" v-if="showAdd"></goal-add>
   </v-app>
 </template>
 
@@ -58,35 +58,41 @@ export default {
     GoalList,
     GoalAdd
   },
-  props: {
-    source: String
-  },
   data: () => ({
     drawer: false,
     searchInput: "",
     items: [
-      { icon: "mdi-contacts", text: "Contacts" },
-      { icon: "mdi-history", text: "Frequently contacted" },
-      { icon: "mdi-content-copy", text: "Duplicates" }
+      { icon: "mdi-contacts", text: "Completed" },
+      { icon: "mdi-history", text: "Missed" }
     ],
     goals: [
       {
-        title: "Refine Goal List"
+        title: "Refine Goal List",
+        done: false
       },
       {
-        title: "Refine Goal Add"
+        title: "Refine Goal Add",
+        done: false
       },
       {
-        title: "Implement Vuex"
+        title: "Implement Vuex",
+        done: false
       },
       {
-        title: "Search"
+        title: "Search",
+        done: true
       },
       {
-        title: "Unit Test"
+        title: "Unit Test",
+        done: false
       },
       {
-        title: "Git CI"
+        title: "Git CI",
+        done: false
+      },
+      {
+        title: "Routes",
+        done: false
       }
     ]
   }),
@@ -97,6 +103,9 @@ export default {
       return this.goals.filter(
         g => g.title.toLowerCase().indexOf(searchFilter) > -1
       );
+    },
+    showAdd() {
+      return this.goals.length < 10;
     }
   },
   methods: {

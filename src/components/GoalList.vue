@@ -9,8 +9,15 @@
             :max-width="640"
             :hover="true"
             :ripple="true"
+            :disabled="goal.done"
           >
-            <v-card-title>{{ goal.title }}</v-card-title>
+            <v-card-title
+              >{{ goal.title }}<v-spacer />
+              <v-checkbox v-model="goal.done" :dense="true"></v-checkbox>
+            </v-card-title>
+            <v-card-text>
+              Some description of goal. Should follow smart objectives.
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
