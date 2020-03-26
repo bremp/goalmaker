@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-content>
     <h1>History</h1>
-  </div>
+  </v-content>
 </template>
 
 <script>
