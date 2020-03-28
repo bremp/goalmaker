@@ -7,7 +7,11 @@
     >
       <v-list dense>
         <template v-for="item in items">
-          <v-list-item :key="item.text" link @click="showComponent(item.text)">
+          <v-list-item
+            :key="item.text"
+            link
+            @click="showComponent(item.text.toLowerCase())"
+          >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -34,17 +38,16 @@
           <span class="hidden-sm-and-down">Goal Maker</span>
         </router-link>
       </v-toolbar-title>
-      <slot>
-        <v-text-field
-          flat
-          solo-inverted
-          hide-details
-          prepend-inner-icon="mdi-magnify"
-          label="Search"
-          class="hidden-sm-and-down"
-          v-model="searchInput"
-        />
-      </slot>
+      <v-text-field
+        flat
+        solo-inverted
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        label="Search"
+        class="hidden-sm-and-down"
+        v-model="searchInput"
+        clearable
+      />
       <v-spacer />
     </v-app-bar>
     <router-view></router-view>
@@ -63,14 +66,8 @@ export default {
     ]
   }),
   methods: {
-    appendGoal(goalData) {
-      console.log(goalData);
-      this.goals.push({
-        title: goalData.title
-      });
-    },
-    showComponent() {
-      this.$router.push("/history");
+    showComponent(routeName) {
+      this.$router.push(`/${routeName}`);
     }
   }
 };

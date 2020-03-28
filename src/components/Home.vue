@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <goal-list :goals="searchedGoals"></goal-list>
-    <goal-add @addGoal="appendGoal" v-if="showAdd"></goal-add>
+    <goal-add @addGoal="appendGoal" v-if="showAddButton"></goal-add>
   </v-content>
 </template>
 
@@ -56,7 +56,7 @@ export default {
         g => g.title.toLowerCase().indexOf(searchFilter) > -1
       );
     },
-    showAdd() {
+    showAddButton() {
       return this.goals.length < 10;
     }
   },
