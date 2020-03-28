@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <goal-list :goals="searchedGoals"></goal-list>
-    <goal-add @addGoal="appendGoal" v-if="showAddButton"></goal-add>
+    <goal-add @addGoal="onAddGoal" v-if="showAddButton"></goal-add>
   </v-content>
 </template>
 
@@ -14,58 +14,26 @@ export default {
     GoalList,
     GoalAdd
   },
-  data: () => ({
-    searchInput: "",
-    // props: ["goals"],
-    goals: [
-      {
-        title: "Refine Goal List",
-        done: false
-      },
-      {
-        title: "Refine Goal Add",
-        done: false
-      },
-      {
-        title: "Implement Vuex",
-        done: false
-      },
-      {
-        title: "Search",
-        done: true
-      },
-      {
-        title: "Unit Test",
-        done: false
-      },
-      {
-        title: "Git CI",
-        done: false
-      },
-      {
-        title: "Routes",
-        done: false
-      }
-    ]
-  }),
+  data: () => ({}),
   computed: {
     searchedGoals() {
-      const searchFilter = this.searchInput.toLowerCase().trim();
-      if (!searchFilter) return this.goals;
-      return this.goals.filter(
+      const searchFilter = this.$store.state.searchQuery.toLowerCase().trim();
+      console.log("searchFilter", searchFilter);
+      if (!searchFilter) return this.$store.state.goals;
+      return this.$store.state.goals.filter(
         g => g.title.toLowerCase().indexOf(searchFilter) > -1
       );
     },
     showAddButton() {
-      return this.goals.length < 10;
+      return this.$store.state.goals.length < 10;
     }
   },
   methods: {
-    appendGoal(goalData) {
-      console.log(goalData);
-      this.goals.push({
-        title: goalData.title
-      });
+    onAddGoal(goalData) {
+      console.log("Home.vue", goalData);
+      const goal = Object.assign({}, goalData);
+      console.log("Home.vue> Object.assign", goal);
+      this.$store.commit("addGoal", Object.assign({}, goalData));
     }
   }
 };

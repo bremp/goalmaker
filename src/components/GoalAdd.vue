@@ -53,7 +53,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-            <v-btn text @click="addGoal(goalData)" :disabled="!valid"
+            <v-btn text @click="onAddGoalClick(goalData)" :disabled="!valid"
               >Save</v-btn
             >
           </v-card-actions>
@@ -82,7 +82,7 @@ export default {
     };
   },
   methods: {
-    addGoal(goalData) {
+    onAddGoalClick(goalData) {
       const isValid = this.$refs.form.validate();
       if (isValid) {
         this.$emit("addGoal", goalData);

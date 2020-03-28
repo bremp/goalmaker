@@ -10,7 +10,7 @@
           <v-list-item
             :key="item.text"
             link
-            @click="showComponent(item.text.toLowerCase())"
+            @click="onMenuItemClick(item.text.toLowerCase())"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -47,6 +47,8 @@
         class="hidden-sm-and-down"
         v-model="searchInput"
         clearable
+        @click:clear="onClearSearch"
+        @keyup="onSearchGoal"
       />
       <v-spacer />
     </v-app-bar>
@@ -66,7 +68,18 @@ export default {
     ]
   }),
   methods: {
-    showComponent(routeName) {
+    onSearchGoal() {
+      if (!this.searchInput) {
+        // TODO: clearable makes searchInput null.
+        this.searchInput = "";
+      }
+      this.$store.commit("searchGoal", this.searchInput);
+    },
+    onClearSearch() {
+      this.$store.commit("searchGoal", "");
+    },
+    onMenuItemClick(routeName) {
+      // TODO: Cause error if clicking on same route.
       this.$router.push(`/${routeName}`);
     }
   }
