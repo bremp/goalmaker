@@ -1,51 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { dataService } from "../shared";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     searchQuery: "", // Search query for goal(s)
-    goals: [
-      {
-        title: "Refine Goal List",
-        done: false
-      },
-      {
-        title: "Refine Goal Add",
-        done: false
-      },
-      {
-        title: "Implement Vuex",
-        done: true
-      },
-      {
-        title: "Search",
-        done: true
-      },
-      {
-        title: "Unit Test",
-        done: false
-      },
-      {
-        title: "Git CI",
-        done: false
-      },
-      {
-        title: "Routes",
-        done: true
-      },
-      {
-        title: "PWA",
-        done: false
-      },
-      {
-        title: "Firebase",
-        done: false
-      }
-    ]
+    goals: []
   },
   mutations: {
+    getGoals(state, goals) {
+      state.goals = goals;
+    },
     addGoal(state, goal) {
       state.goals.push(goal);
     },
@@ -54,6 +22,19 @@ export default new Vuex.Store({
     }
   },
   // getters: {},
-  actions: {},
+  actions: {
+    async getGoalsAction({ commit }) {
+      const goals = await dataService.getGoals();
+      commit("getGoals", goals);
+    },
+    // addGoalAction({ commit, state }, goal) {
+    //   const goals = [...state.goals, goal];
+    //   axios.post("api/goals.json", goals).then(() => commit("addGoal", goal));
+    // }
+    async addGoalAction({ commit }, goal) {
+      const addedGoal = await dataService.addGoal(goal);
+      commit("addGoal", addedGoal);
+    }
+  },
   modules: {}
 });

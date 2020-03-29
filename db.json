@@ -1,0 +1,39 @@
+{
+  "goals": [
+    {
+      "id": 1,
+      "title": "Refine Goal List",
+      "done": false
+    },
+    {
+      "id": 2,
+      "title": "Refine Goal Add",
+      "done": false
+    },
+    {
+      "id": 3,
+      "title": "Implement Vuex",
+      "done": true
+    },
+    {
+      "id": 4,
+      "title": "Unit Test",
+      "done": false
+    },
+    {
+      "id": 5,
+      "title": "Git CI",
+      "done": false
+    },
+    {
+      "id": 6,
+      "title": "Update on done click",
+      "done": false
+    },
+    {
+      "id": 7,
+      "title": "Firebase",
+      "done": false
+    }
+  ]
+}

@@ -14,11 +14,13 @@ export default {
     GoalList,
     GoalAdd
   },
+  async created() {
+    await this.$store.dispatch("getGoalsAction");
+  },
   data: () => ({}),
   computed: {
     searchedGoals() {
       const searchFilter = this.$store.state.searchQuery.toLowerCase().trim();
-      console.log("searchFilter", searchFilter);
       if (!searchFilter) return this.$store.state.goals;
       return this.$store.state.goals.filter(
         g => g.title.toLowerCase().indexOf(searchFilter) > -1
@@ -29,11 +31,12 @@ export default {
     }
   },
   methods: {
-    onAddGoal(goalData) {
+    async onAddGoal(goalData) {
+      // TODO: move to GoalAdd component.
       console.log("Home.vue", goalData);
       const goal = Object.assign({}, goalData);
       console.log("Home.vue> Object.assign", goal);
-      this.$store.commit("addGoal", Object.assign({}, goalData));
+      await this.$store.dispatch("addGoalAction", Object.assign({}, goalData));
     }
   }
 };
