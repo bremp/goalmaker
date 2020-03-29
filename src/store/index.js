@@ -15,7 +15,15 @@ export default new Vuex.Store({
       state.goals = goals;
     },
     addGoal(state, goal) {
-      state.goals.push(goal);
+      state.goals.push(goal); // mutable addition
+    },
+    updateGoal(state, goal) {
+      const index = state.goals.findIndex(g => g.id === goal.id);
+      state.goals.splice(index, 1, goal);
+      state.goals = [...state.goals];
+    },
+    deleteGoal(state, goalId) {
+      state.goals = [...state.goals.filter(g => g.id !== goalId)];
     },
     searchGoal(state, query) {
       state.searchQuery = query;
@@ -27,13 +35,17 @@ export default new Vuex.Store({
       const goals = await dataService.getGoals();
       commit("getGoals", goals);
     },
-    // addGoalAction({ commit, state }, goal) {
-    //   const goals = [...state.goals, goal];
-    //   axios.post("api/goals.json", goals).then(() => commit("addGoal", goal));
-    // }
     async addGoalAction({ commit }, goal) {
       const addedGoal = await dataService.addGoal(goal);
       commit("addGoal", addedGoal);
+    },
+    async updateGoalAction({ commit }, goal) {
+      const updatedGoal = await dataService.updateGoal(goal);
+      commit("updateGoal", updatedGoal);
+    },
+    async deleteGoalAction({ commit }, goal) {
+      const deletedGoalId = await dataService.deleteGoal(goal);
+      commit("deleteGoal", deletedGoalId);
     }
   },
   modules: {}

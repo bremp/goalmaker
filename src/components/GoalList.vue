@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <draggable v-model="goals" @start="drag = true" @end="drag = false">
-      <v-row v-for="(goal, i) in goals" :key="i">
+      <v-row v-for="goal in goals" :key="goal.id">
         <v-col>
           <v-card
             class="mx-auto"
@@ -13,7 +13,11 @@
           >
             <v-card-title
               >{{ goal.title }}<v-spacer />
-              <v-checkbox v-model="goal.done" :dense="true"></v-checkbox>
+              <v-checkbox
+                v-model="goal.done"
+                :dense="true"
+                @change="onDoneChange(goal)"
+              ></v-checkbox>
             </v-card-title>
             <v-card-text>
               Some description of goal. Should follow smart objectives.
@@ -32,6 +36,17 @@ export default {
   props: ["goals"],
   components: {
     draggable
+  },
+  methods: {
+    onDoneChange(goal) {
+      console.log(arguments);
+      if (goal.done) {
+        this.updateGoal(goal);
+      }
+    },
+    async updateGoal(goal) {
+      await this.$store.dispatch("updateGoalAction", Object.assign({}, goal));
+    }
   }
 };
 </script>
