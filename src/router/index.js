@@ -1,24 +1,29 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../components/Home.vue";
+import Goals from "../components/Goals.vue";
 import History from "../components/History.vue";
+import PageNotFound from "../components/PageNotFound.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "Goals",
+    component: Goals
   },
   {
-    path: "/home",
+    path: "/goals",
     redirect: "/"
   },
   {
     path: "/history",
     name: "History",
     component: History
+  },
+  {
+    path: "*",
+    component: PageNotFound
   }
 ];
 

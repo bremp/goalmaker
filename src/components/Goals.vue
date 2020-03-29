@@ -9,7 +9,7 @@
 import GoalList from "./GoalList";
 import GoalAdd from "./GoalAdd";
 export default {
-  name: "Home",
+  name: "Goals",
   components: {
     GoalList,
     GoalAdd
