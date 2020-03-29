@@ -10,7 +10,7 @@
           <v-list-item
             :key="item.text"
             link
-            @click="onMenuItemClick(item.text.toLowerCase())"
+            @click="onMenuItemClick(item.text)"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -79,8 +79,10 @@ export default {
       this.$store.commit("searchGoal", "");
     },
     onMenuItemClick(routeName) {
-      // TODO: Cause error if clicking on same route.
-      this.$router.push(`/${routeName}`);
+      const path = `/${routeName.toLowerCase()}`;
+      if (this.$route.path !== path) {
+        this.$router.push(path);
+      }
     }
   }
 };

@@ -34,6 +34,14 @@ export default new Vuex.Store({
       {
         title: "Routes",
         done: true
+      },
+      {
+        title: "PWA",
+        done: false
+      },
+      {
+        title: "Firebase",
+        done: false
       }
     ]
   },
