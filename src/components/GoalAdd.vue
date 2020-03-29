@@ -82,13 +82,17 @@ export default {
     };
   },
   methods: {
-    onAddGoalClick(goalData) {
+    onAddGoalClick(goal) {
       const isValid = this.$refs.form.validate();
       if (isValid) {
-        this.$emit("addGoal", goalData);
+        this.addGoal(goal);
         this.dialog = false;
         this.$refs.form.reset();
       }
+    },
+    async addGoal(goal) {
+      console.log("GoalAdd.vue", Object.assign({}, goal));
+      await this.$store.dispatch("addGoalAction", Object.assign({}, goal));
     }
   }
 };
