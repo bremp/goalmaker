@@ -8,6 +8,8 @@
 <script>
 import GoalList from "./GoalList";
 import GoalAdd from "./GoalAdd";
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "Goals",
   components: {
@@ -15,21 +17,23 @@ export default {
     GoalAdd
   },
   async created() {
-    await this.$store.dispatch("getGoalsAction");
+    await this.getGoalsAction();
   },
-  data: () => ({}),
   computed: {
+    ...mapState(["goals", "searchQuery"]),
     searchedGoals() {
-      const searchFilter = this.$store.state.searchQuery.toLowerCase().trim();
-      if (!searchFilter) return this.$store.state.goals;
-      return this.$store.state.goals.filter(
+      const searchFilter = this.searchQuery.toLowerCase().trim();
+      if (!searchFilter) return this.goals;
+      return this.goals.filter(
         g => g.title.toLowerCase().indexOf(searchFilter) > -1
       );
     },
     showAddButton() {
-      return this.$store.state.goals.length < 10;
+      return this.goals.length < 10;
     }
   },
-  methods: {}
+  methods: {
+    ...mapActions(["getGoalsAction"])
+  }
 };
 </script>

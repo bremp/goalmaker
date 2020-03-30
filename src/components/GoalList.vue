@@ -14,9 +14,9 @@
             <v-card-title
               >{{ goal.title }}<v-spacer />
               <v-checkbox
-                v-model="goal.done"
+                :value="goal.done"
                 :dense="true"
-                @change="onDoneChange(goal)"
+                @change="onDoneChange(goal.id, $event)"
               ></v-checkbox>
             </v-card-title>
             <v-card-text>
@@ -31,6 +31,8 @@
 
 <script>
 import draggable from "vuedraggable";
+import { mapActions } from "vuex";
+
 export default {
   name: "GoalList",
   props: ["goals"],
@@ -38,14 +40,10 @@ export default {
     draggable
   },
   methods: {
-    onDoneChange(goal) {
+    ...mapActions(["checkAsDoneAction"]),
+    async onDoneChange(id, isDone) {
       console.log(arguments);
-      if (goal.done) {
-        this.updateGoal(goal);
-      }
-    },
-    async updateGoal(goal) {
-      await this.$store.dispatch("updateGoalAction", Object.assign({}, goal));
+      await this.checkAsDoneAction({ id, isDone });
     }
   }
 };

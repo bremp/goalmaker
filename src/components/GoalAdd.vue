@@ -35,7 +35,7 @@
                 <v-text-field
                   prepend-icon="mdi-mail"
                   placeholder="Title"
-                  v-model="goalData.title"
+                  v-model="newGoal.title"
                   :rules="titleRules"
                   :counter="100"
                   required
@@ -45,7 +45,7 @@
                 <v-text-field
                   prepend-icon="mdi-text"
                   placeholder="Description"
-                  v-model="goalData.description"
+                  v-model="newGoal.description"
                 />
               </v-col>
             </v-row>
@@ -53,7 +53,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-            <v-btn text @click="onAddGoalClick(goalData)" :disabled="!valid"
+            <v-btn text @click="onAddGoalClick(newGoal)" :disabled="!valid"
               >Save</v-btn
             >
           </v-card-actions>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "GoalAdd",
   data() {
@@ -75,13 +77,14 @@ export default {
         v => !!v || "Title is required",
         v => (v && v.length <= 100) || "Title must be less than 100 characters"
       ],
-      goalData: {
+      newGoal: {
         title: "",
         description: ""
       }
     };
   },
   methods: {
+    ...mapActions(["addGoalAction"]),
     onAddGoalClick(goal) {
       const isValid = this.$refs.form.validate();
       if (isValid) {
@@ -92,7 +95,7 @@ export default {
     },
     async addGoal(goal) {
       console.log("GoalAdd.vue", Object.assign({}, goal));
-      await this.$store.dispatch("addGoalAction", Object.assign({}, goal));
+      await this.addGoalAction(Object.assign({}, goal));
     }
   }
 };

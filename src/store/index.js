@@ -6,6 +6,7 @@ import { dataService } from "../shared";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== "production",
   state: {
     searchQuery: "", // Search query for goal(s)
     goals: []
@@ -22,6 +23,10 @@ export default new Vuex.Store({
       state.goals.splice(index, 1, goal);
       state.goals = [...state.goals];
     },
+    checkAsDone(state, { id, isDone }) {
+      const goal = state.goals.find(g => g.id === id);
+      goal.done = isDone;
+    },
     deleteGoal(state, goalId) {
       state.goals = [...state.goals.filter(g => g.id !== goalId)];
     },
@@ -29,7 +34,6 @@ export default new Vuex.Store({
       state.searchQuery = query;
     }
   },
-  // getters: {},
   actions: {
     async getGoalsAction({ commit }) {
       const goals = await dataService.getGoals();
@@ -43,10 +47,17 @@ export default new Vuex.Store({
       const updatedGoal = await dataService.updateGoal(goal);
       commit("updateGoal", updatedGoal);
     },
+    async checkAsDoneAction({ commit }, { id, isDone }) {
+      await dataService.checkAsDone(id, isDone);
+      commit("checkAsDone", { id, isDone });
+    },
     async deleteGoalAction({ commit }, goal) {
       const deletedGoalId = await dataService.deleteGoal(goal);
       commit("deleteGoal", deletedGoalId);
     }
+  },
+  getters: {
+    getGoalById: state => id => state.goals.find(g => g.id === id) // For later use.
   },
   modules: {}
 });

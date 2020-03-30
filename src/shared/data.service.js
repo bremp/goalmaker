@@ -49,6 +49,17 @@ const updateGoal = async function(goal) {
   }
 };
 
+const checkAsDone = async function(id, isDone) {
+  try {
+    const response = await axios.patch(`${API}/goals/${id}`, { done: isDone });
+    const checkedAsDoneGoal = parseItem(response, 200);
+    return checkedAsDoneGoal;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 const deleteGoal = async function(goal) {
   try {
     const response = await axios.delete(`${API}/goals/${goal.id}`);
@@ -84,5 +95,6 @@ export const dataService = {
   getGoal,
   addGoal,
   updateGoal,
+  checkAsDone,
   deleteGoal
 };
