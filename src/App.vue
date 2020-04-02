@@ -73,6 +73,7 @@ export default {
         // TODO: clearable makes searchInput null.
         this.searchInput = "";
       }
+      // TODO: Use mapMutations
       this.$store.commit("searchGoal", this.searchInput);
     },
     onClearSearch() {

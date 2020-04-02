@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:watch": "vue-cli-service test:unit --watch",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "backend": "json-server --watch db.json --routes routes.json --port 8888 --delay 250 --middlewares ./node_modules/json-server-reset",
