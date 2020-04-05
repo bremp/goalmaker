@@ -33,29 +33,16 @@ describe("GoalList.vue", () => {
             title: "Goal Title 2",
             description: "Goal 2 description.",
             done: false
-          },
-          {
-            id: 3,
-            title: "Goal Title 3",
-            description: "Goal 3 description.",
-            done: false
           }
         ]
       }
     });
 
-    expect(wrapper.html()).toMatchSnapshot();
     const listItems = wrapper.findAll(".v-card");
-    expect(listItems).toHaveLength(3);
+    expect(listItems).toHaveLength(2);
   });
 
   it("Should fire event on done checkbox is clicked.", async () => {
-    const goal = {
-      id: 1,
-      title: "Goal Title 1",
-      description: "Goal 1 description.",
-      done: false
-    };
     let actions = {
       checkAsDoneAction: jest.fn()
     };
@@ -66,7 +53,14 @@ describe("GoalList.vue", () => {
       localVue,
       vuetify,
       propsData: {
-        goals: [Object.assign({}, goal)]
+        goals: [
+          {
+            id: 1,
+            title: "Goal Title 1",
+            description: "Goal 1 description.",
+            done: false
+          }
+        ]
       }
     });
 
