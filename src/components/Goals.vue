@@ -16,6 +16,12 @@ export default {
     GoalList,
     GoalAdd
   },
+  props: {
+    maxActiveGoals: {
+      type: Number,
+      default: 5
+    }
+  },
   async created() {
     await this.getGoalsAction();
   },
@@ -29,7 +35,7 @@ export default {
       );
     },
     showAddButton() {
-      return this.goals.length < 10;
+      return this.goals.length < this.maxActiveGoals;
     }
   },
   methods: {
