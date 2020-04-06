@@ -90,7 +90,6 @@ export default {
       }
     },
     async addGoal(goal) {
-      console.log("GoalAdd.vue", Object.assign({}, goal));
       await this.addGoalAction(Object.assign({}, goal));
     },
     onCancelClick() {
