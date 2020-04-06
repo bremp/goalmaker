@@ -1,139 +1,86 @@
-// Libraries
 import Vue from "vue";
+import Vuex from "vuex";
 import Vuetify from "vuetify";
-
-// Components
 import GoalAddForm from "@/components/GoalAddForm";
-
-// Utilities
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 
 Vue.use(Vuetify);
 
 const localVue = createLocalVue();
+localVue.use(Vuex);
 
 describe("GoalAddForm.vue", () => {
   let vuetify;
+  let actions;
+  let store;
 
   beforeEach(() => {
     vuetify = new Vuetify();
+    actions = {
+      addGoalAction: jest.fn()
+    };
+    store = new Vuex.Store({
+      actions
+    });
   });
 
-  it("Should have empty input fields initially.", () => {
+  it("Should disable 'Save' button when form is invalid.", async () => {
     const wrapper = mount(GoalAddForm, {
+      store,
       localVue,
       vuetify
     });
-    expect(wrapper.html()).toMatchSnapshot();
-    const title = wrapper.find("#title");
-    expect(title.text()).toBe("");
 
-    const description = wrapper.find("#description");
-    expect(description.text()).toBe("");
+    // By default input fields are empty and will be invalid on save click.
+    let title = wrapper.find("#title");
+    title.setValue("");
+    await wrapper.vm.$nextTick();
 
     const saveButton = wrapper.find("#save");
-    const spy = spyOn(wrapper.vm, "onSaveClick");
-    expect(wrapper.vm.onSaveClick).toHaveBeenCalledTimes(0);
-
     saveButton.trigger("click");
-    // expect(wrapper.vm.valid).toBe(false);
-    expect(wrapper.vm.onSaveClick).toHaveBeenCalledTimes(1);
-    // expect(wrapper.vm.addService).toBeCalled();
+
+    expect(saveButton.props().disabled).toBe(true);
+    expect(actions.addGoalAction.mock.calls).toHaveLength(0);
   });
 
-  // it("Should have empty input fields initially.", () => {
-  //   const wrapper = mount(GoalAddForm, {
-  //     localVue,
-  //     vuetify
-  //   });
+  it("Should enable 'Save' button when form is valid.", async () => {
+    const wrapper = mount(GoalAddForm, {
+      store,
+      localVue,
+      vuetify
+    });
 
-  //   const title = wrapper.find("#title");
-  //   expect(title.text()).toBe("");
+    let title = wrapper.find("#title");
+    title.setValue("Some title");
+    await wrapper.vm.$nextTick(); // Update DOM.
 
-  //   const description = wrapper.find("#description");
-  //   expect(description.text()).toBe("");
+    const saveButton = wrapper.find("#save");
+    saveButton.trigger("click");
 
-  //   // const saveButton = wrapper.find("#save");
-  //   // expect(saveButton.props().disabled).toBe(true);
-  // });
+    expect(saveButton.props().disabled).toBe(false);
+    expect(actions.addGoalAction.mock.calls).toHaveLength(1);
+  });
 
-  // it("enter text and check value of input.", () => {
-  //   const wrapper = mount(GoalAddForm, {
-  //     localVue,
-  //     vuetify
-  //   });
+  it("Should fire event when 'Save' button is clicked and fields are valid.", async () => {
+    const wrapper = mount(GoalAddForm, {
+      store,
+      localVue,
+      vuetify
+    });
 
-  // expect(wrapper.vm.dialog).toBe(false);
-  // wrapper.vm.dialog = true;
+    let title = wrapper.find("#title");
+    title.setValue("Some title");
+    let description = wrapper.find("#description");
+    description.setValue("Some description");
+    await wrapper.vm.$nextTick();
 
-  // expect(wrapper.vm.showDialog).toBe(false);
+    const saveButton = wrapper.find("#save");
+    saveButton.trigger("click");
 
-  // const button = wrapper.find("#addGoal");
-  // expect(button.exists()).toBe(true);
-
-  // button.trigger("click");
-  // expect(wrapper.vm.showDialog).toBe(true);
-
-  // wrapper.vm.$on("clicked", event);
-
-  // expect(event).toHaveBeenCalledTimes(0);
-
-  // button.trigger("click");
-
-  // expect(event).toHaveBeenCalledTimes(1);
-
-  // expect(wrapper.html()).toMatchSnapshot();
-
-  // let title = wrapper.find("#title");
-  // title.setValue("goal title");
-  // expect(wrapper.vm.newGoal.title).toBe("goal title");
-  // const description = wrapper.find("#description");
-  // expect(description.text()).toBe("");
-  // });
-
-  // it("should not emit an event when Save button is clicked", () => {
-  //   const wrapper = mount(GoalAdd, {
-  //     localVue,
-  //     vuetify
-  //   });
-
-  //   const event = jest.fn();
-  //   const button = wrapper.find("#save");
-
-  //   // Here we bind a listener to the wrapper
-  //   // instance to catch our custom event
-  //   // https://vuejs.org/v2/api/#Instance-Methods-Events
-  //   wrapper.vm.$on("action-btn:clicked", event);
-
-  //   expect(event).toHaveBeenCalledTimes(0);
-
-  //   // Simulate a click on the button
-  //   button.trigger("click");
-
-  //   // Ensure that our mock event was called
-  //   expect(event).toHaveBeenCalledTimes(0);
-  // });
-
-  // it("should have empty input fields initially.", () => {
-  //   const wrapper = mount(GoalAdd, {
-  //     localVue,
-  //     vuetify,
-  //     data() {
-  //       return {
-  //         newGoal: {
-  //           title: "A title",
-  //           description: "A description"
-  //         }
-  //       };
-  //     }
-  //   });
-
-  //   // We could also verify this differently
-  //   // by checking the text content
-  //   let title = wrapper.find("#title");
-  //   title.setValue("A title");
-  //   expect(title.text()).toBe("A title");
-  //   const description = wrapper.find("#description");
-  //   expect(description.text()).toBe("A description");
-  // });
+    expect(actions.addGoalAction.mock.calls).toHaveLength(1);
+    expect(actions.addGoalAction.mock.calls[0][1]).toEqual({
+      title: "Some title",
+      description: "Some description"
+    });
+  });
 });

@@ -42,7 +42,7 @@ describe("GoalList.vue", () => {
     expect(listItems).toHaveLength(2);
   });
 
-  it("Should fire event on done checkbox is clicked.", async () => {
+  it("Should fire event when done checkbox is clicked.", async () => {
     let actions = {
       checkAsDoneAction: jest.fn()
     };
