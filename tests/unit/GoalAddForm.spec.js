@@ -39,7 +39,7 @@ describe("GoalAddForm.vue", () => {
     const saveButton = wrapper.find("#save");
     saveButton.trigger("click");
 
-    expect(saveButton.props().disabled).toBe(false);
+    expect(saveButton.props().disabled).toBe(true);
     expect(actions.addGoalAction.mock.calls).toHaveLength(0);
   });
 
