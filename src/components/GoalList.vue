@@ -42,7 +42,6 @@ export default {
   methods: {
     ...mapActions(["checkAsDoneAction"]),
     async onDoneChange(id, isDone) {
-      console.log(arguments);
       await this.checkAsDoneAction({ id, isDone });
     }
   }
