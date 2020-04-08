@@ -12,12 +12,12 @@
     },
     {
       "id": 3,
-      "title": "Git CI",
+      "title": "Firebase",
       "done": false
     },
     {
       "id": 4,
-      "title": "Firebase",
+      "title": "Git CD",
       "done": false
     }
   ]
